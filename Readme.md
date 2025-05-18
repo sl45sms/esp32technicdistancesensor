@@ -12,4 +12,6 @@ GPIO 14(IO14) ----> HC-SR05 ECHO (use voltage divider with 1k on sensor echo pin
 
 Tested with "train hub" but should work with any powered up hub.
 
+demo video:[https://youtube.com/shorts/TxOgPfGrovo?feature=share]
+
 * development with vscode and pymakr extension, change the serial port on workspace settings
