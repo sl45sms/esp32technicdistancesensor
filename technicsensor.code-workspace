@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "esp32technicdistancesensor",
+			"path": "."
+		},
+		{
+			"name": "serial://dev/tty.usbserial-1420",
+			"uri": "serial:///dev/tty.usbserial-1420/"
+		}
+	]
+}
