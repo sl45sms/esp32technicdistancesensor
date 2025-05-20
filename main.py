@@ -25,29 +25,31 @@ echo = machine.Pin(ECHO_PIN, machine.Pin.IN)
 def distance_mm():
     """
     Reads distance from HY-SRF05 ultrasonic sensor in millimeters.
+    Includes timeout to avoid infinite loop if sensor fails.
     """
-    # Ensure trigger is low
     trig.value(0)
     time.sleep_us(2)
-    # Send 10us pulse to trigger
     trig.value(1)
     time.sleep_us(10)
     trig.value(0)
 
-    # Wait for echo to go high
+    # Wait for echo to go high (start pulse)
+    timeout = 10000  # microseconds
+    start_wait = time.ticks_us()
     while echo.value() == 0:
-        pass
+        if time.ticks_diff(time.ticks_us(), start_wait) > timeout:
+            return 0  # Timeout waiting for echo high
     start = time.ticks_us()
 
-    # Wait for echo to go low
+    # Wait for echo to go low (end pulse)
+    end_wait = time.ticks_us()
     while echo.value() == 1:
-        pass
+        if time.ticks_diff(time.ticks_us(), end_wait) > timeout:
+            return 2000  # Timeout waiting for echo low (max distance)
     end = time.ticks_us()
 
     duration = time.ticks_diff(end, start)
-    # Sound speed: 343 m/s = 0.343 mm/us, round-trip, so divide by 2
     distance = (duration * 0.343) / 2
-    # Clamp to sensor range
     if distance < 50:
         return 0
     elif distance > 2000:
